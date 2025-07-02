@@ -15,13 +15,21 @@ on:
     branches:
       - main
 
-env:
-  ASTRO_API_TOKEN: ${{ inputs.apiToken || secrets.ASTRO_API_TOKEN }}
-  DEPLOYMENT_ID: ${{ inputs.deploymentId || vars.DEPLOYMENT_ID }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ASTRO_API_TOKEN: ${{ secrets.ASTRO_API_TOKEN }}
+      DEPLOYMENT_ID: ${{ vars.DEPLOYMENT_ID }}
     steps:
-    - name: Deploy to Astro
-      uses: astronomer/deploy-action@v0.4
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Astro CLI
+        run: curl -sSL https://install.astronomer.io | sudo bash -s
+
+      - name: Deploy to Astro
+        uses: astronomer/deploy-action@v0.4
+        with:
+          deployment-id: ${{ github.event.inputs.deploymentId || env.DEPLOYMENT_ID }}
+          api-token: ${{ github.event.inputs.apiToken || env.ASTRO_API_TOKEN }}
