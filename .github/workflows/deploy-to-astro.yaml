@@ -31,5 +31,5 @@ jobs:
       - name: Deploy to Astro
         uses: astronomer/deploy-action@v0.4
         with:
-          deployment-id: ${{ secrets.DEPLOYMENT_ID }}
+          deployment-id: "cmcllp7w10c2i01kyo9mxpgcw"
           api-token: ${{ secrets.ASTRO_API_TOKEN }}
